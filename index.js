@@ -7,7 +7,7 @@ function getTodos(){
     return JSON.parse(data);
 }
 
-function saveTodo(todos){
+function saveTodos(todos){
     fs.writeFileSync(file, JSON.stringify(todos, null, 2));
 }
 
@@ -18,12 +18,12 @@ const todos = getTodos();
 
 if(command === "add"){
     const newTodo = {
-        "id" : todos.length +1,
+        "id": (todos.length===0 ? 1 : Math.max(...todos.map(todo => todo.id)) +1),
         "name" : argument,
         done: false,
     };
     todos.push(newTodo);
-    saveTodo(todos);
+    saveTodos(todos);
     console.log("Todo added succesfully!")
 }
 
@@ -33,7 +33,7 @@ else if(command ==="delete"){
     if(i===-1) console.log("Todo not found!")
     else{
         todos.splice(i, 1);
-        saveTodo(todos)
+        saveTodos(todos)
         console.log("Todo deleted successfully.")
     }
 }
@@ -44,7 +44,7 @@ else if(command ==="done"){
     if(!todo) console.log("Todo not found!")
     else{
         todo.done=true;
-        saveTodo(todos)
+        saveTodos(todos)
         console.log("Todo marked as done.")
     }
 }
